@@ -6,21 +6,3 @@ export const options = {
   },
 };
 
-async function getTracksData(number) {
-  await fetch(
-    'https://deezerdevs-deezer.p.rapidapi.com/search?q=rihanna',
-    options
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      const modifiedResponce =
-        response.data.length > number - 1
-          ? response.data.slice(0, number)
-          : response;
-      // console.log(modifiedResponce);
-      result = modifiedResponce;
-    })
-    .catch((err) => console.error(err));
-}
-
-// console.log(getTracksData(5));
