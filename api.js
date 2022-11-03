@@ -5,3 +5,4 @@ export const options = {
     'X-RapidAPI-Host': 'deezerdevs-deezer.p.rapidapi.com',
   },
 };
+
