@@ -1,39 +1,71 @@
 <html>
+  <head>
+    <title>Inline editor</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  </head>
 
-<head>
-	<title>Inline editor</title>
-	<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
-</head>
-
-<body class="h-screen">
-
-	<div id="app" class="h-screen flex justify-center items-center bg-gray-900">
-
-    <div class="w-full">
-      <div class="h-2 bg-red-light"></div>
+  <body class="h-screen">
+    <div id="app" class="h-screen flex justify-center items-center bg-gray-900">
+      <div class="w-full">
+        <div class="h-2 bg-red-light"></div>
         <div class="flex items-center justify-center h-screen bg-red-lightest">
-          <div class="bg-white shadow-lg rounded-lg" style="width: 45rem !important;">
+          <div
+            class="bg-white shadow-lg rounded-lg"
+            style="width: 45rem !important"
+          >
             <div class="flex">
               <div class="w-full p-8">
                 <div class="flex justify-between">
                   <div>
-                    <h3 class="text-2xl text-grey-darkest font-medium">One & One (feat. Maria Nayler)</h3>
-                    <p class="text-sm text-grey mt-1">Robert Miles</p>
+                    <h3 class="text-2xl text-grey-darkest font-medium">
+                      title
+                    </h3>
+                    <p class="text-sm text-grey mt-1">artist</p>
                   </div>
                 </div>
                 <div class="flex justify-evenly items-center mt-8">
                   <div class="text-grey-darker">
-                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M4 5h3v10H4V5zm12 0v10l-9-5 9-5z"/></svg>
+                    <svg
+                      class="w-8 h-8"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M4 5h3v10H4V5zm12 0v10l-9-5 9-5z" />
+                    </svg>
                   </div>
-                  <div class="text-white bg-red-500 p-8 rounded-full bg-red-light shadow-lg"
-                 >
-                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5 4h3v12H5V4zm7 0h3v12h-3V4z"/></svg>
+                  <div
+                    class="
+                      text-white
+                      bg-red-500
+                      p-8
+                      rounded-full
+                      bg-red-light
+                      shadow-lg
+                    "
+                  >
+                    <svg
+                      class="w-8 h-8"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M5 4h3v12H5V4zm7 0h3v12h-3V4z" />
+                    </svg>
                   </div>
-                  <div class="text-grey-darker"
-                  @click="setTrack">
-                    <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M13 5h3v10h-3V5zM4 5l9 5-9 5V5z"/></svg>
+                  <div class="text-grey-darker" @click="setTrack">
+                    <svg
+                      class="w-8 h-8"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M13 5h3v10h-3V5zM4 5l9 5-9 5V5z" />
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -45,8 +77,28 @@
               </div>
               <div class="mt-1">
                 <div class="h-1 bg-grey-dark rounded-full">
-                  <div class="w-1/5 h-1 bg-red-light rounded-full relative bg-red-500">
-                    <span class="w-4 h-4 bg-red absolute pin-r pin-b -mb-1 rounded-full shadow"></span>
+                  <div
+                    class="
+                      w-1/5
+                      h-1
+                      bg-red-light
+                      rounded-full
+                      relative
+                      bg-red-500
+                    "
+                  >
+                    <span
+                      class="
+                        w-4
+                        h-4
+                        bg-red
+                        absolute
+                        pin-r pin-b
+                        -mb-1
+                        rounded-full
+                        shadow
+                      "
+                    ></span>
                   </div>
                 </div>
               </div>
@@ -54,9 +106,6 @@
           </div>
         </div>
       </div>
-
-	</div>
-
-</body>
-
+    </div>
+  </body>
 </html>
