@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { options } from './Api.js';
+import { options } from './api.js';
 createApp({
   data() {
     return {
