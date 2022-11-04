@@ -1,8 +1,6 @@
 import { createApp } from 'vue';
-import Player from './Player.js';
 import { options } from './api.js';
 createApp({
-  components: { Player },
   data() {
     return {
       message: null,
@@ -23,31 +21,34 @@ createApp({
     },
   },
   async mounted() {
-    const response = await fetch(
-      'https://deezerdevs-deezer.p.rapidapi.com/search?q=rihanna',
-      options
-    ); //.catch((err) => console.error(err));
-    const { data } = await response.json();
+    fetch('https://deezerdevs-deezer.p.rapidapi.com/search?q=rihanna', options)
+      .then(async (response) => {
+        const data = await response.json();
 
-    const croppedResponce = (await data.length) > 4 ? data.slice(0, 5) : data;
-    const modifiedResponce = croppedResponce.map((it) => {
-      return {
-        artist: it.artist.name,
-        title: it.title_short,
-        track: it.preview,
-      };
-    });
-    this.songs = modifiedResponce;
+        if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+        }
+        const croppedResponce = (await (data.data.length > 4))
+          ? data.data.slice(0, 5)
+          : data.data;
+        console.log(croppedResponce);
+        const modifiedResponce = await croppedResponce.map((it) => {
+          return {
+            artist: it.artist.name,
+            title: it.title_short,
+            track: it.preview,
+          };
+        });
+        this.songs = modifiedResponce;
 
-    this.artist = modifiedResponce[0].artist;
-    this.title = modifiedResponce[0].title;
-    this.track = modifiedResponce[0].track;
+        this.artist = modifiedResponce[0].artist;
+        this.title = modifiedResponce[0].title;
+        this.track = modifiedResponce[0].track;
+      })
+      .catch((error) => {
+        this.errorMessage = error;
+        console.error('There was an error!', error);
+      });
   },
-  template: `
-      <div class="w-full">
-        <div class="h-2 bg-red-light"></div>
-        <div class="flex items-center justify-center h-screen bg-red-lightest">
-          <Player :artist="artist" :title="title" :track="track"/>
-        </div>
-      </div>`,
 }).mount('#app');
