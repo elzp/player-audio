@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
+import Player from './Player.js';
 import { options } from './api.js';
 createApp({
+  components: { Player },
   data() {
     return {
       message: null,
@@ -41,4 +43,11 @@ createApp({
     this.title = modifiedResponce[0].title;
     this.track = modifiedResponce[0].track;
   },
+  template: `
+      <div class="w-full">
+        <div class="h-2 bg-red-light"></div>
+        <div class="flex items-center justify-center h-screen bg-red-lightest">
+          <Player :artist="artist" :title="title" :track="track"/>
+        </div>
+      </div>`,
 }).mount('#app');
