@@ -14,6 +14,11 @@ createApp({
     setTrack() {
       console.log(this.message);
     },
+    updateCurrentSong(number) {
+      this.artist = songs[number].artist;
+      this.title = songs[number].title;
+      this.track = songs[number].track;
+    },
   },
   async mounted() {
     const response = await fetch(
