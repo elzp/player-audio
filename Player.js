@@ -1,4 +1,4 @@
-﻿export default {
+export default {
   name: 'Player',
   props: ['artist', 'title', 'track'],
   data() {
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="flex justify-evenly items-center mt-8">
-        <div class="text-grey-darker">
+        <div class="text-grey-darker" @click="$emit('change','left')">
           <svg
             class="w-8 h-8"
             fill="currentColor"
@@ -49,7 +49,7 @@
             <path d="M5 4h3v12H5V4zm7 0h3v12h-3V4z" />
           </svg>
         </div>
-        <div class="text-grey-darker" @click="setTrack">
+        <div class="text-grey-darker" @click="$emit('change','right')">
           <svg
             class="w-8 h-8"
             fill="currentColor"
