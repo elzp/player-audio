@@ -10,16 +10,37 @@ createApp({
       title: '',
       artist: '',
       track: '',
+      numberOfCurrentTrack: 0,
+      maxnumberOfTracks: 5,
     };
   },
   methods: {
-    setTrack() {
-      console.log(this.message);
+    setTrack(direction) {
+      switch (direction) {
+        case 'left':
+          if (this.numberOfCurrentTrack === 0) {
+            this.numberOfCurrentTrack = this.maxnumberOfTracks - 1;
+          } else {
+            this.numberOfCurrentTrack--;
+          }
+          this.updateCurrentSong(this.numberOfCurrentTrack);
+          break;
+        case 'right':
+          if (this.numberOfCurrentTrack === this.maxnumberOfTracks - 1) {
+            this.numberOfCurrentTrack = 0;
+          } else {
+            this.numberOfCurrentTrack++;
+          }
+          this.updateCurrentSong(this.numberOfCurrentTrack);
+          break;
+        default:
+          break;
+      }
     },
     updateCurrentSong(number) {
-      this.artist = songs[number].artist;
-      this.title = songs[number].title;
-      this.track = songs[number].track;
+      this.artist = this.songs[number].artist;
+      this.title = this.songs[number].title;
+      this.track = this.songs[number].track;
     },
   },
   async mounted() {
@@ -31,10 +52,10 @@ createApp({
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
         }
-        const croppedResponce = (await (data.data.length > 4))
-          ? data.data.slice(0, 5)
+        const croppedResponce = (await (data.data.length >
+          this.maxnumberOfTracks - 1))
+          ? data.data.slice(0, this.maxnumberOfTracks)
           : data.data;
-        console.log(croppedResponce);
         const modifiedResponce = await croppedResponce.map((it) => {
           return {
             artist: it.artist.name,
@@ -57,7 +78,7 @@ createApp({
   <div class="w-full">
     <div class="h-2 bg-red-light"></div>
     <div class="flex items-center justify-center h-screen bg-red-lightest">
-      <Player :artist="artist" :title="title" :track="track"/>
+      <Player :artist="artist" :title="title" :track="track" @change="setTrack"/>
     </div>
   </div>`,
 }).mount('#app');
