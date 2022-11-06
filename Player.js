@@ -7,19 +7,11 @@ export default {
     };
   },
   created() {
-    // this.currentAudio = new Audio(this.track);
-
     this.$watch(
       () => this.track,
-      (next, prev) => {
-        if (next !== '') {
-          this.currentAudio = new Audio(this.track);
-          this.currentAudio.play();
-          console.log(this.currentAudio);
-        }
-        setTimeout(() => {
-          this.currentAudio.pause();
-        }, 10000);
+      () => {
+        this.currentAudio = new Audio(this.track);
+        this.currentAudio.play();
       }
     );
   },
