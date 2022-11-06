@@ -15,8 +15,15 @@ export default {
       }
     );
   },
-  unmounted() {
-    // this.currentAudio.pla
+ updated() {
+    this.$watch(
+      () => this.currentAudio,
+      (next, prev) => {
+        if (prev !== '') {
+          prev.pause();
+        }
+      }
+    );
   },
   methods: {},
   template: `<div
