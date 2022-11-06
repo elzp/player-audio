@@ -4,6 +4,8 @@ export default {
   data() {
     return {
       currentAudio: '',
+      maxDuration: { minutes: 0, seconds: 30 },
+      currentDuration: { minutes: 0, seconds: 0 },
     };
   },
   created() {
