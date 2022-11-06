@@ -27,7 +27,15 @@ export default {
       }
     );
   },
-  methods: {},
+  methods: {
+  createTwoDigits(number) {
+      if (number.toString().split('').length === 1) {
+        return `0${number}`;
+      } else {
+        return `${number}`;
+      }
+    },
+  },
   template: `<div
   class="bg-white shadow-lg rounded-lg"
   style="width: 45rem !important"
