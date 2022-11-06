@@ -95,8 +95,8 @@ export default {
   </div>
   <div class="mx-8 py-4">
     <div class="flex justify-between text-sm text-grey-darker">
-      <p>0:40</p>
-      <p>4:20</p>
+      <p>{{createTwoDigits(currentDuration.minutes)}}:{{createTwoDigits(currentDuration.seconds)}}</p>
+      <p>{{createTwoDigits(maxDuration.minutes)}}:{{createTwoDigits(maxDuration.seconds)}}</p>
     </div>
     <div class="mt-1">
       <div class="h-1 bg-grey-dark rounded-full">
