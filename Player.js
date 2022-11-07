@@ -6,6 +6,7 @@ export default {
       currentAudio: '',
       maxDuration: { minutes: 0, seconds: 30 },
       currentDuration: { minutes: 0, seconds: 0 },
+      value: '.1%',
     };
   },
   created() {
@@ -108,13 +109,14 @@ export default {
       <div class="h-1 bg-grey-dark rounded-full">
         <div
           class="
-            w-1/5
+            
             h-1
             bg-red-light
             rounded-full
             relative
             bg-red-500
           "
+          :style="{ 'width': value }"
         >
           <span
             class="
