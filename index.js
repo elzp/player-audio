@@ -12,6 +12,8 @@ createApp({
       track: '',
       numberOfCurrentTrack: 0,
       maxnumberOfTracks: 5,
+      loaded: false,
+      loadingInterval: null,
     };
   },
   methods: {
@@ -43,38 +45,49 @@ createApp({
       this.track = this.songs[number].track;
     },
   },
-  async mounted() {
-    fetch('https://deezerdevs-deezer.p.rapidapi.com/search?q=rihanna', options)
-      .then(async (response) => {
-        const data = await response.json();
-
-        if (!response.ok) {
-          const error = (data && data.message) || response.statusText;
-          return Promise.reject(error);
-        }
-        const croppedResponce = (await (data.data.length >
-          this.maxnumberOfTracks - 1))
-          ? data.data.slice(0, this.maxnumberOfTracks)
-          : data.data;
-        const modifiedResponce = await croppedResponce.map((it) => {
-          return {
-            artist: it.artist.name,
-            title: it.title_short,
-            track: it.preview,
-          };
+async mounted() {
+    this.loadingInterval = setInterval(() => {
+      fetch(
+        'https://deezerdevs-deezer.p.rapidapi.com/search?q=rihanna',
+        options
+      )
+        .then(async (response) => {
+          const data = await response.json();
+          if (!response.ok) {
+            const error = (data && data.message) || response.statusText;
+            return Promise.reject(error);
+          }
+          const croppedResponce = (await (data.data.length >
+            this.maxnumberOfTracks - 1))
+            ? data.data.slice(0, this.maxnumberOfTracks)
+            : data.data;
+          const modifiedResponce = await croppedResponce.map((it) => {
+            return {
+              artist: it.artist.name,
+              title: it.title_short,
+              track: it.preview,
+            };
+          });
+          this.songs = modifiedResponce;
+          this.artist = modifiedResponce[0].artist;
+          this.title = modifiedResponce[0].title;
+          this.track = modifiedResponce[0].track;
+          this.loaded = true;
+        })
+        .catch((error) => {
+          this.errorMessage = error;
+          console.error('There was an error!', error);
         });
-        this.songs = modifiedResponce;
+    }, 2500);
 
-        this.artist = modifiedResponce[0].artist;
-        this.title = modifiedResponce[0].title;
-        this.track = modifiedResponce[0].track;
-      })
-      .catch((error) => {
-        this.errorMessage = error;
-        console.error('There was an error!', error);
-      });
+    this.$watch(
+      () => this.loaded,
+      () => {
+        clearInterval(this.loadingInterval);
+      }
+    );
   },
-  template: `
+  template: ` 
   <div class="w-full">
     <div class="h-2 bg-red-light"></div>
     <div class="flex items-center justify-center h-screen bg-red-lightest">
