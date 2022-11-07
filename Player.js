@@ -35,6 +35,11 @@ export default {
         return `${number}`;
       }
     },
+    pause() {
+      if (this.currentAudio !== '') {
+        this.currentAudio.pause();
+      }
+    },
   },
   template: `<div
   class="bg-white shadow-lg rounded-lg"
@@ -70,6 +75,7 @@ export default {
             bg-red-light
             shadow-lg
           "
+          @click="pause"
         >
           <svg
             class="w-8 h-8"
