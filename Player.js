@@ -7,8 +7,8 @@ export default {
       maxDuration: { minutes: 0, seconds: 30 },
       currentDuration: { minutes: 0, seconds: 0 },
       styleLength: '.1%',
-      valueOfLength: 0.1,
-      playedSecondsInterval: null,
+      valueOfLength:  0.1,
+      playedSecondsInterval:  null,
     };
   },
   created() {
@@ -26,8 +26,8 @@ export default {
       (next, prev) => {
         if (prev !== '') {
           prev.pause();
-          clearInterval(this.playedSecondsInterval);
-          this.playedSecondsInterval = null;
+           clearInterval(this.playedSecondsInterval);
+           this.playedSecondsInterval = null;
         }
       }
     );
@@ -43,7 +43,7 @@ export default {
     pause() {
       if (this.currentAudio !== '') {
         this.currentAudio.pause();
-        clearInterval(this.playedSecondsInterval);
+         clearInterval(this.playedSecondsInterval);
       }
     },
   },
