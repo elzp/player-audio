@@ -7,8 +7,8 @@ export default {
       maxDuration: { minutes: 0, seconds: 30 },
       currentDuration: { minutes: 0, seconds: 0 },
       styleLength: '.1%',
-      valueOfLength:  0.1,
-      playedSecondsInterval:  null,
+      valueOfLength: 0.1,
+      playedSecondsInterval: null,
     };
   },
   created() {
@@ -17,6 +17,7 @@ export default {
       () => {
         this.currentAudio = new Audio(this.track);
         this.currentAudio.play();
+        this.useLengthInterval();
       }
     );
   },
@@ -24,13 +25,21 @@ export default {
     this.$watch(
       () => this.currentAudio,
       (next, prev) => {
+        clearInterval(this.playedSecondsInterval);
         if (prev !== '') {
           prev.pause();
-           clearInterval(this.playedSecondsInterval);
-           this.playedSecondsInterval = null;
+
+          this.playedSecondsInterval = null;
+          (this.styleLength = '.1%'),
+            (this.valueOfLength = 0.1),
+            this.useLengthInterval();
         }
       }
     );
+  },
+  beforeUpdate() {
+    // clearInterval(this.playedSecondsInterval);
+    this.playedSecondsInterval = null;
   },
   methods: {
     createTwoDigits(number) {
@@ -43,9 +52,21 @@ export default {
     pause() {
       if (this.currentAudio !== '') {
         this.currentAudio.pause();
-         clearInterval(this.playedSecondsInterval);
+        clearInterval(this.playedSecondsInterval);
       }
     },
+    // useLengthInterval() {
+    //   this.playedSecondsInterval = setInterval(() => {
+    //     const maxduration =
+    //       this.maxDuration.minutes * 60 + this.maxDuration.seconds;
+    //     if (this.valueOfLength === maxduration) {
+    //       clearInterval(this.playedSecondsInterval);
+    //     }
+    //     this.valueOfLength = Math.floor(this.valueOfLength + 1);
+    //     this.styleLength = `${(this.valueOfLength * 100) / maxduration}%`;
+    //     console.log(this.styleLength, this.valueOfLength);
+    //   }, 1000);
+    // },
   },
   template: `<div
   class="bg-white shadow-lg rounded-lg"
