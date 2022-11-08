@@ -6,7 +6,9 @@ export default {
       currentAudio: '',
       maxDuration: { minutes: 0, seconds: 30 },
       currentDuration: { minutes: 0, seconds: 0 },
-      value: '.1%',
+      styleLength: '.1%',
+      valueOfLength: 0.1,
+      playedSecondsInterval: null,
     };
   },
   created() {
@@ -18,18 +20,20 @@ export default {
       }
     );
   },
- updated() {
+  updated() {
     this.$watch(
       () => this.currentAudio,
       (next, prev) => {
         if (prev !== '') {
           prev.pause();
+          clearInterval(this.playedSecondsInterval);
+          this.playedSecondsInterval = null;
         }
       }
     );
   },
   methods: {
-  createTwoDigits(number) {
+    createTwoDigits(number) {
       if (number.toString().split('').length === 1) {
         return `0${number}`;
       } else {
@@ -39,6 +43,7 @@ export default {
     pause() {
       if (this.currentAudio !== '') {
         this.currentAudio.pause();
+        clearInterval(this.playedSecondsInterval);
       }
     },
   },
@@ -116,7 +121,7 @@ export default {
             relative
             bg-red-500
           "
-          :style="{ 'width': value }"
+          :style="{ 'width': styleLength }"
         >
           <span
             class="
