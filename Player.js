@@ -14,10 +14,15 @@ export default {
   created() {
     this.$watch(
       () => this.track,
-      () => {
-        this.currentAudio = new Audio(this.track);
-        this.currentAudio.play();
-        this.useLengthInterval();
+      (next, prev) => {
+        if (next !== prev) {
+          this.currentAudio = new Audio(this.track);
+          // this.currentAudio.play();
+
+          // this.playedSecondsInterval = setInterval(() => {
+          //   console.log(this.styleLength, this.valueOfLength);
+          // }, 1000);
+        }
       }
     );
   },
@@ -30,16 +35,11 @@ export default {
           prev.pause();
 
           this.playedSecondsInterval = null;
-          (this.styleLength = '.1%'),
-            (this.valueOfLength = 0.1),
-            this.useLengthInterval();
+          this.styleLength = '.1%';
+          this.valueOfLength = 0.1;
         }
       }
     );
-  },
-  beforeUpdate() {
-    // clearInterval(this.playedSecondsInterval);
-    this.playedSecondsInterval = null;
   },
   methods: {
     createTwoDigits(number) {
@@ -52,21 +52,8 @@ export default {
     pause() {
       if (this.currentAudio !== '') {
         this.currentAudio.pause();
-        clearInterval(this.playedSecondsInterval);
       }
     },
-    // useLengthInterval() {
-    //   this.playedSecondsInterval = setInterval(() => {
-    //     const maxduration =
-    //       this.maxDuration.minutes * 60 + this.maxDuration.seconds;
-    //     if (this.valueOfLength === maxduration) {
-    //       clearInterval(this.playedSecondsInterval);
-    //     }
-    //     this.valueOfLength = Math.floor(this.valueOfLength + 1);
-    //     this.styleLength = `${(this.valueOfLength * 100) / maxduration}%`;
-    //     console.log(this.styleLength, this.valueOfLength);
-    //   }, 1000);
-    // },
   },
   template: `<div
   class="bg-white shadow-lg rounded-lg"
