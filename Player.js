@@ -11,17 +11,31 @@ export default {
       playedSecondsInterval: null,
     };
   },
-  created() {
+  mounted() {
     this.$watch(
       () => this.track,
       (next, prev) => {
         if (next !== prev) {
           this.currentAudio = new Audio(this.track);
-          // this.currentAudio.play();
-
-          // this.playedSecondsInterval = setInterval(() => {
-          //   console.log(this.styleLength, this.valueOfLength);
-          // }, 1000);
+          this.currentAudio.play();
+          this.playedSecondsInterval = setInterval(() => {
+            if (this.valueOfLength < 30) {
+              this.valueOfLength = Math.floor(this.valueOfLength + 1);
+              this.styleLength = `${(this.valueOfLength * 100) / 30}%`;
+            } else {
+              clearInterval(this.playedSecondsInterval);
+            }
+          }, 1000);
+        }
+      }
+    );
+  },
+  beforeUpdate() {
+    this.$watch(
+      () => this.track,
+      (next, prev) => {
+        if (prev !== '') {
+          clearInterval(this.playedSecondsInterval);
         }
       }
     );
@@ -37,6 +51,15 @@ export default {
           this.playedSecondsInterval = null;
           this.styleLength = '.1%';
           this.valueOfLength = 0.1;
+
+          this.playedSecondsInterval = setInterval(() => {
+            if (this.valueOfLength < 30) {
+              this.valueOfLength = Math.floor(this.valueOfLength + 1);
+              this.styleLength = `${(this.valueOfLength * 100) / 30}%`;
+            } else {
+              clearInterval(this.playedSecondsInterval);
+            }
+          }, 1000);
         }
       }
     );
@@ -52,6 +75,7 @@ export default {
     pause() {
       if (this.currentAudio !== '') {
         this.currentAudio.pause();
+        clearInterval(this.playedSecondsInterval);
       }
     },
   },
