@@ -11,13 +11,36 @@ export default {
       playedSecondsInterval: null,
     };
   },
-  created() {
+  mounted() {
     this.$watch(
       () => this.track,
-      () => {
-        this.currentAudio = new Audio(this.track);
-        this.currentAudio.play();
-        this.useLengthInterval();
+      (next, prev) => {
+        let numberedMaxDuration =
+          60 * this.maxDuration.minutes + this.maxDuration.seconds;
+        if (next !== prev) {
+          this.currentAudio = new Audio(this.track);
+          this.currentAudio.play();
+          this.playedSecondsInterval = setInterval(() => {
+            if (this.valueOfLength < numberedMaxDuration) {
+              this.valueOfLength = Math.floor(this.valueOfLength + 1);
+              this.styleLength = `${
+                (this.valueOfLength * 100) / numberedMaxDuration
+              }%`;
+            } else {
+              clearInterval(this.playedSecondsInterval);
+            }
+          }, 1000);
+        }
+      }
+    );
+  },
+  beforeUpdate() {
+    this.$watch(
+      () => this.track,
+      (next, prev) => {
+        if (prev !== '') {
+          clearInterval(this.playedSecondsInterval);
+        }
       }
     );
   },
@@ -25,21 +48,29 @@ export default {
     this.$watch(
       () => this.currentAudio,
       (next, prev) => {
+        let numberedMaxDuration =
+          60 * this.maxDuration.minutes + this.maxDuration.seconds;
         clearInterval(this.playedSecondsInterval);
         if (prev !== '') {
           prev.pause();
 
           this.playedSecondsInterval = null;
-          (this.styleLength = '.1%'),
-            (this.valueOfLength = 0.1),
-            this.useLengthInterval();
+          this.styleLength = '.1%';
+          this.valueOfLength = 0.1;
+
+          this.playedSecondsInterval = setInterval(() => {
+            if (this.valueOfLength < numberedMaxDuration) {
+              this.valueOfLength = Math.floor(this.valueOfLength + 1);
+              this.styleLength = `${
+                (this.valueOfLength * 100) / numberedMaxDuration
+              }%`;
+            } else {
+              clearInterval(this.playedSecondsInterval);
+            }
+          }, 1000);
         }
       }
     );
-  },
-  beforeUpdate() {
-    // clearInterval(this.playedSecondsInterval);
-    this.playedSecondsInterval = null;
   },
   methods: {
     createTwoDigits(number) {
@@ -55,18 +86,6 @@ export default {
         clearInterval(this.playedSecondsInterval);
       }
     },
-    // useLengthInterval() {
-    //   this.playedSecondsInterval = setInterval(() => {
-    //     const maxduration =
-    //       this.maxDuration.minutes * 60 + this.maxDuration.seconds;
-    //     if (this.valueOfLength === maxduration) {
-    //       clearInterval(this.playedSecondsInterval);
-    //     }
-    //     this.valueOfLength = Math.floor(this.valueOfLength + 1);
-    //     this.styleLength = `${(this.valueOfLength * 100) / maxduration}%`;
-    //     console.log(this.styleLength, this.valueOfLength);
-    //   }, 1000);
-    // },
   },
   template: `<div
   class="bg-white shadow-lg rounded-lg"
