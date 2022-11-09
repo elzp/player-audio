@@ -15,13 +15,17 @@ export default {
     this.$watch(
       () => this.track,
       (next, prev) => {
+        let numberedMaxDuration =
+          60 * this.maxDuration.minutes + this.maxDuration.seconds;
         if (next !== prev) {
           this.currentAudio = new Audio(this.track);
           this.currentAudio.play();
           this.playedSecondsInterval = setInterval(() => {
-            if (this.valueOfLength < 30) {
+            if (this.valueOfLength < numberedMaxDuration) {
               this.valueOfLength = Math.floor(this.valueOfLength + 1);
-              this.styleLength = `${(this.valueOfLength * 100) / 30}%`;
+              this.styleLength = `${
+                (this.valueOfLength * 100) / numberedMaxDuration
+              }%`;
             } else {
               clearInterval(this.playedSecondsInterval);
             }
@@ -44,6 +48,8 @@ export default {
     this.$watch(
       () => this.currentAudio,
       (next, prev) => {
+        let numberedMaxDuration =
+          60 * this.maxDuration.minutes + this.maxDuration.seconds;
         clearInterval(this.playedSecondsInterval);
         if (prev !== '') {
           prev.pause();
@@ -53,9 +59,11 @@ export default {
           this.valueOfLength = 0.1;
 
           this.playedSecondsInterval = setInterval(() => {
-            if (this.valueOfLength < 30) {
+            if (this.valueOfLength < numberedMaxDuration) {
               this.valueOfLength = Math.floor(this.valueOfLength + 1);
-              this.styleLength = `${(this.valueOfLength * 100) / 30}%`;
+              this.styleLength = `${
+                (this.valueOfLength * 100) / numberedMaxDuration
+              }%`;
             } else {
               clearInterval(this.playedSecondsInterval);
             }
