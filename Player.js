@@ -4,10 +4,10 @@ export default {
   data() {
     return {
       currentAudio: '',
-      maxDuration: { minutes: 0, seconds: 30 },
-      currentDuration: { minutes: 0, seconds: 0 },
+      maxDuration: { minutes: 1, seconds: 5 },
+      currentDuration: { minutes: 0, seconds: 55 },
       styleLength: '.1%',
-      valueOfLength: 0.1,
+      valueOfLength: 55.1,
       playedSecondsInterval: null,
     };
   },
@@ -22,10 +22,17 @@ export default {
           this.currentAudio.play();
           this.playedSecondsInterval = setInterval(() => {
             if (this.valueOfLength < numberedMaxDuration) {
+              console.log(this.valueOfLength, numberedMaxDuration);
               this.valueOfLength = Math.floor(this.valueOfLength + 1);
               this.styleLength = `${
                 (this.valueOfLength * 100) / numberedMaxDuration
               }%`;
+              if (this.currentDuration.seconds === 59) {
+                this.currentDuration.seconds = 0;
+                this.currentDuration.minutes = this.currentDuration.minutes + 1;
+              } else {
+                this.currentDuration.seconds = this.currentDuration.seconds + 1;
+              }
             } else {
               clearInterval(this.playedSecondsInterval);
             }
@@ -64,6 +71,13 @@ export default {
               this.styleLength = `${
                 (this.valueOfLength * 100) / numberedMaxDuration
               }%`;
+
+              if (this.currentDuration.seconds === 59) {
+                this.currentDuration.seconds = 0;
+                this.currentDuration.minutes = this.currentDuration.minutes + 1;
+              } else {
+                this.currentDuration.seconds = this.currentDuration.seconds + 1;
+              }
             } else {
               clearInterval(this.playedSecondsInterval);
             }
