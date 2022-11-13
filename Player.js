@@ -9,6 +9,7 @@ export default {
       styleLength: '.1%',
       valueOfLength: 0.1,
       playedSecondsInterval: null,
+      isPaused: false,
     };
   },
   mounted() {
@@ -136,8 +137,14 @@ export default {
             shadow-lg
           "
           @click="pause"
-        >
-          <svg
+        > 
+          <svg v-if="isPaused"
+          class="w-8 h-8"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20" fill="currentColor">
+	          <polygon  points="5,0 5,20 20,10" fill="white" />
+          </svg>
+          <svg v-if="!isPaused"
             class="w-8 h-8"
             fill="currentColor"
             xmlns="http://www.w3.org/2000/svg"
