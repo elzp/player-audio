@@ -9,23 +9,26 @@ export default {
       styleLength: '.1%',
       valueOfLength: 0.1,
       playedSecondsInterval: null,
+      numberedMaxDuration: 0,
       isPaused: false,
     };
+  },
+  created() {
+    this.numberedMaxDuration =
+      60 * this.maxDuration.minutes + this.maxDuration.seconds;
   },
   mounted() {
     this.$watch(
       () => this.track,
       (next, prev) => {
-        let numberedMaxDuration =
-          60 * this.maxDuration.minutes + this.maxDuration.seconds;
         if (next !== prev) {
           this.currentAudio = new Audio(this.track);
           this.currentAudio.play();
           this.playedSecondsInterval = setInterval(() => {
-            if (this.valueOfLength < numberedMaxDuration) {
+            if (this.valueOfLength < this.numberedMaxDuration) {
               this.valueOfLength = Math.floor(this.valueOfLength + 1);
               this.styleLength = `${
-                (this.valueOfLength * 100) / numberedMaxDuration
+                (this.valueOfLength * 100) / this.numberedMaxDuration
               }%`;
               if (this.currentDuration.seconds === 59) {
                 this.currentDuration.seconds = 0;
@@ -47,6 +50,7 @@ export default {
       (next, prev) => {
         if (prev !== '') {
           clearInterval(this.playedSecondsInterval);
+          this.isPaused = false;
         }
       }
     );
@@ -55,8 +59,6 @@ export default {
     this.$watch(
       () => this.currentAudio,
       (next, prev) => {
-        let numberedMaxDuration =
-          60 * this.maxDuration.minutes + this.maxDuration.seconds;
         clearInterval(this.playedSecondsInterval);
         if (prev !== '') {
           prev.pause();
@@ -66,23 +68,7 @@ export default {
           this.styleLength = '.1%';
           this.valueOfLength = 0.1;
 
-          this.playedSecondsInterval = setInterval(() => {
-            if (this.valueOfLength < numberedMaxDuration) {
-              this.valueOfLength = Math.floor(this.valueOfLength + 1);
-              this.styleLength = `${
-                (this.valueOfLength * 100) / numberedMaxDuration
-              }%`;
-
-              if (this.currentDuration.seconds === 59) {
-                this.currentDuration.seconds = 0;
-                this.currentDuration.minutes = this.currentDuration.minutes + 1;
-              } else {
-                this.currentDuration.seconds = this.currentDuration.seconds + 1;
-              }
-            } else {
-              clearInterval(this.playedSecondsInterval);
-            }
-          }, 1000);
+          this.interval();
         }
       }
     );
@@ -97,9 +83,44 @@ export default {
     },
     pause() {
       if (this.currentAudio !== '') {
-        this.currentAudio.pause();
-        clearInterval(this.playedSecondsInterval);
+        switch (this.isPaused) {
+          case false:
+            this.currentAudio.pause();
+            clearInterval(this.playedSecondsInterval);
+            this.isPaused = true;
+            break;
+          case true:
+            this.currentAudio.play();
+            this.interval();
+            this.isPaused = false;
+            break;
+          default:
+            this.currentAudio.pause();
+            clearInterval(this.playedSecondsInterval);
+            this.isPaused = true;
+            break;
+        }
       }
+    },
+
+    interval() {
+      this.playedSecondsInterval = setInterval(() => {
+        if (this.valueOfLength < this.numberedMaxDuration) {
+          this.valueOfLength = Math.floor(this.valueOfLength + 1);
+          this.styleLength = `${
+            (this.valueOfLength * 100) / this.numberedMaxDuration
+          }%`;
+
+          if (this.currentDuration.seconds === 59) {
+            this.currentDuration.seconds = 0;
+            this.currentDuration.minutes = this.currentDuration.minutes + 1;
+          } else {
+            this.currentDuration.seconds = this.currentDuration.seconds + 1;
+          }
+        } else {
+          clearInterval(this.playedSecondsInterval);
+        }
+      }, 1000);
     },
   },
   template: `<div
